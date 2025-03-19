@@ -10,6 +10,7 @@ A curated list of resources for learning Zero-Knowledge Proofs (ZKP), categorize
 - [A Beginner’s Guide to ZK-SNARKs (ConsenSys)](https://consensys.net/blog/blockchain-explained/a-beginners-guide-to-zk-snarks/)
 - [ZKP: Math, Algorithms, and Applications (zkDocs)](https://docs.zkproof.org/edu)
 - [Zero-Knowledge Proof (ZKP) — Explained (Chainlink)](https://chain.link/education/zero-knowledge-proof-zkp)
+- [ZK-Monk](https://zkmonk.org/)
 - [ZKProof Standards](https://zkproof.org)
 
 ---
