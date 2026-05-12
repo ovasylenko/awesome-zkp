@@ -1,8 +1,23 @@
 # Awesome ZKP [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> A curated list of resources for learning and building with Zero-Knowledge Proofs (ZKP).
+> A curated, practical map for learning, researching, and building with zero-knowledge proofs.
 
 Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK research, engineering, and consulting inquiries.
+
+## How to Use This List
+
+Zero-knowledge proofs sit at the intersection of cryptography, systems engineering, protocol design, and application development. This list is organized so you can choose the shortest useful path instead of reading everything in order.
+
+- **New to ZK:** start with [Foundations & Introductions](#foundations--introductions), then follow the [Absolute Beginner](#absolute-beginner) learning path.
+- **Building circuits or apps:** use the [Developer Track](#developer-track), then jump to [Languages & DSLs](#languages--dsls), [Hands-On Labs & Exercises](#hands-on-labs--exercises), and [Security](#security).
+- **Doing research:** use the [Research Track](#research-track), then read through [Key Papers & Research](#key-papers--research) and compare systems in [Proof Systems](#proof-systems).
+- **Evaluating products or protocols:** use the [Product & Application Track](#product--application-track), then review [Applications & Projects](#applications--projects), [Developer Tools](#developer-tools), and [Security](#security).
+
+### Curation Criteria
+
+Resources are included when they are useful, maintained, influential, or unusually clear. Preference is given to official documentation, primary research, production-grade tooling, high-signal tutorials, and security material that helps builders avoid real mistakes.
+
+This list avoids low-effort marketing pages, shallow reposts, abandoned projects without historical importance, and duplicate resources that do not add a distinct perspective.
 
 ## Contents
 
@@ -10,7 +25,9 @@ Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK resea
 - [Learning Paths](#learning-paths)
 - [Math & Cryptography Prerequisites](#math--cryptography-prerequisites)
 - [Key Papers & Research](#key-papers--research)
+- [Research Frontiers](#research-frontiers)
 - [Proof Systems](#proof-systems)
+- [Benchmarks & Comparisons](#benchmarks--comparisons)
 - [Libraries & Frameworks](#libraries--frameworks)
 - [Languages & DSLs](#languages--dsls)
 - [Tutorials & Courses](#tutorials--courses)
@@ -21,6 +38,7 @@ Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK resea
 - [Security](#security)
 - [Communities & Events](#communities--events)
 - [Newsletters & Media](#newsletters--media)
+- [More Curated Lists](#more-curated-lists)
 - [Contributing](#contributing)
 
 ---
@@ -39,24 +57,32 @@ Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK resea
 ## Learning Paths
 
 ### Absolute Beginner
+Use this path if you want the intuition first and the math later.
+
 - Start with Matthew Green's [illustrated primer](https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/) and Chainlink's [high-level explainer](https://chain.link/education/zero-knowledge-proof-zkp).
 - Watch the early [ZK Whiteboard Sessions](https://zkhack.dev/whiteboard/) modules, especially "What is a SNARK?" and "Building a SNARK".
 - Read the first chapters of [The RareSkills Book of Zero Knowledge](https://www.rareskills.io/zk-book) to connect the ideas to code.
 - Build a toy circuit in [Circom](https://docs.circom.io/getting-started/writing-circuits/) or [Noir](https://noir-lang.org/docs/dev/getting_started/quick_start).
 
 ### Developer Track
+Use this path if you can already code and want to build working proofs.
+
 - Learn finite fields, arithmetic circuits, R1CS, polynomial commitments, and Fiat-Shamir.
 - Build circuits with [Circom](https://docs.circom.io/) plus [snarkjs](https://github.com/iden3/snarkjs), then repeat the same idea with [Noir](https://noir-lang.org/docs).
 - Complete [ZK Puzzles](https://github.com/0xPARC/zk-puzzles) and study bugs in the [ZK Bug Tracker](https://github.com/0xPARC/zk-bug-tracker).
 - Try a zkVM such as [RISC Zero](https://dev.risczero.com/) or [SP1](https://docs.succinct.xyz/) once circuit-level development feels familiar.
 
 ### Research Track
+Use this path if you want to understand proof systems from first principles.
+
 - Read Justin Thaler's [Proofs, Arguments, and Zero-Knowledge](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html).
 - Work through sum-check, GKR, polynomial IOPs, FRI, PLONK, lookup arguments, and folding schemes.
 - Follow [ZK Whiteboard Sessions](https://zkhack.dev/whiteboard/) for current topics such as lookups, folding, small fields, and lattice-based SNARKs.
 - Read new papers through [IACR ePrint](https://eprint.iacr.org/) and compare constructions by assumptions, setup, proof size, verifier time, and prover cost.
 
 ### Product & Application Track
+Use this path if you need to evaluate where ZK is useful, risky, or production-ready.
+
 - Study privacy payments, rollups, identity, voting, storage proofs, zkML, and zk coprocessors.
 - Read production docs from [Zcash](https://z.cash/), [Starknet](https://docs.starknet.io/), [Aztec](https://docs.aztec.network/), [Mina](https://docs.minaprotocol.com/), and [Semaphore](https://docs.semaphore.pse.dev/).
 - Learn the security model before designing a protocol: constraints, witness generation, trusted setup, recursion, nullifiers, and public/private input boundaries.
@@ -109,6 +135,29 @@ Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK resea
 
 ---
 
+## Research Frontiers
+
+### Recursion & Folding
+- [HyperNova: Recursive Arguments for Customizable Constraint Systems (2023)](https://eprint.iacr.org/2023/573) - Generalizes folding schemes for customizable constraint systems.
+- [ProtoStar: Generic Efficient Accumulation/Folding for Special Sound Protocols (2023)](https://eprint.iacr.org/2023/620) - Folding and accumulation framework for special-sound protocols.
+- [CycleFold: Folding-scheme-based Recursive Arguments over a Cycle of Elliptic Curves (2023)](https://eprint.iacr.org/2023/1192) - Recursive proof construction using elliptic-curve cycles.
+- [ProtoGalaxy: Efficient ProtoStar-style Folding of Multiple Instances (2023)](https://eprint.iacr.org/2023/1106) - Multi-instance folding for reducing recursive proving overhead.
+- [LatticeFold: A Lattice-based Folding Scheme and its Applications to Succinct Proof Systems (2024)](https://eprint.iacr.org/2024/257) - Folding scheme built from lattice assumptions.
+
+### Lookups, zkVMs & General-Purpose Proving
+- [Jolt: SNARKs for Virtual Machines via Lookups (2023)](https://eprint.iacr.org/2023/1217) - Lookup-based approach for proving virtual-machine execution.
+- [Binius: Highly Efficient Proofs over Binary Fields (2023)](https://eprint.iacr.org/2023/1784) - Binary-field proof system design aimed at high prover efficiency.
+- [Caulk: Lookup Arguments in Sublinear Time (2022)](https://eprint.iacr.org/2022/621) - Lookup argument with sublinear proving and verification techniques.
+- [Orion: Zero Knowledge Proof with Linear Prover Time (2022)](https://eprint.iacr.org/2022/1010) - Linear-time prover construction for transparent arguments.
+
+### Polynomial Commitments & SNARK Building Blocks
+- [Bulletproofs: Short Proofs for Confidential Transactions and More (2017)](https://eprint.iacr.org/2017/1066) - Inner-product argument foundation for many transparent proof systems.
+- [DARK: Practical Non-Interactive Zero-Knowledge Proofs from Class Groups (2019)](https://eprint.iacr.org/2019/1229) - Transparent polynomial commitments from groups of unknown order.
+- [Hyrax: Doubly-efficient zkSNARKs without Trusted Setup (2017)](https://eprint.iacr.org/2017/1132) - Doubly efficient proof system without trusted setup.
+- [Brakedown: Linear-time and Field-agnostic SNARKs for R1CS (2021)](https://eprint.iacr.org/2021/1043) - Linear-time prover with field-agnostic commitments.
+
+---
+
 ## Proof Systems
 
 | System | Type | Trusted Setup | Post-Quantum | Proof Size | Prover Time |
@@ -118,6 +167,16 @@ Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK resea
 | Halo2 | SNARK | None (IPA) | No | ~5 KB | Moderate |
 | STARKs | STARK | None | Yes | ~50-200 KB | Fast |
 | Bulletproofs | Argument | None | No | ~700 B | Slow |
+
+---
+
+## Benchmarks & Comparisons
+
+- [zkbench](https://zkbench.dev/) - Benchmarks and comparison data for zero-knowledge proof systems.
+- [zk-Harness](https://github.com/zkCollective/zk-Harness) - Benchmarking framework for general-purpose ZK languages and libraries.
+- [Delendum ZK Benchmarking](https://github.com/delendum-xyz/zk-benchmarking) - Benchmark suite for comparing ZK proof libraries across standardized tasks.
+- [babybear-labs ZK Benchmark](https://github.com/babybear-labs/benchmark) - Benchmark implementations for zkVMs and proving systems including RISC Zero, SP1, Jolt, Halo2, Circom, and powdr.
+- [zkInterface](https://github.com/QED-it/zkinterface) - Interoperability format for exchanging constraint systems between ZK tools.
 
 ---
 
@@ -311,9 +370,33 @@ Curated by [Oleksii Vasylenko](https://ovasylenko.com/) - available for ZK resea
 
 ---
 
+## More Curated Lists
+
+- [a16z crypto Canon: Zero Knowledge Proofs](https://a16zcrypto.com/posts/article/zero-knowledge-canon/) - Curated conceptual reading path from a16z crypto.
+- [Matter Labs Awesome Zero Knowledge Proofs](https://github.com/matter-labs/awesome-zero-knowledge-proofs) - Large historical awesome list of ZK papers, libraries, and learning resources.
+- [0xPARC Learning Resources](https://learn.0xparc.org/) - Applied ZK learning hub from the 0xPARC ecosystem.
+- [ZKProof Community Reference](https://docs.zkproof.org/reference) - Community reference material around ZK terminology, standards, and education.
+
+---
+
 ## Contributing
 
-Contributions are welcome! Please submit a pull request to add resources. Ensure links are active and resources are relevant to zero-knowledge proofs.
+Contributions are welcome. Please open a pull request with a short explanation of why the resource belongs here.
+
+Good additions usually meet at least one of these criteria:
+
+- It is an official project, protocol, library, paper, course, or standard.
+- It is widely used or cited in the ZK ecosystem.
+- It teaches a concept more clearly than the resources already listed.
+- It helps builders avoid security, implementation, or protocol-design mistakes.
+- It is maintained and still useful to readers today.
+
+Before submitting:
+
+- Check that the link is active.
+- Place the resource in the most specific section.
+- Use the existing bullet format: `- [Name](https://example.com/) - One concise sentence.`
+- Avoid adding duplicate, promotional, or low-signal content.
 
 ---
 
