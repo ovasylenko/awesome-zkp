@@ -1,0 +1,25 @@
+# Operating system metadata
+.DS_Store
+Thumbs.db
+
+# Editor and IDE state
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs, temporary files, and generated reports
+*.log
+tmp/
+temp/
+.cache/
+coverage/
+
+# Local link-checker output
+lychee-out.md

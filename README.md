@@ -1,4 +1,4 @@
-# Awesome ZKP [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+# Awesome ZKP [![Awesome](https://awesome.re/badge.svg)](https://awesome.re) [![Check links](https://github.com/ovasylenko/awesome-zkp/actions/workflows/links.yml/badge.svg)](https://github.com/ovasylenko/awesome-zkp/actions/workflows/links.yml)
 
 > A curated, practical map for learning, researching, and building with zero-knowledge proofs.
 
@@ -19,23 +19,34 @@ Resources are included when they are useful, maintained, influential, or unusual
 
 This list avoids low-effort marketing pages, shallow reposts, abandoned projects without historical importance, and duplicate resources that do not add a distinct perspective.
 
+Project inclusion is not an endorsement or a security review. ZK software changes quickly: check release notes, audits, trusted-setup assumptions, licenses, and current network status before relying on a resource in production. Historical or sunset projects are labeled explicitly rather than presented as active choices.
+
+Lifecycle labels are used only when an official source states the project's status: **Research**, **Alpha**, **Beta**, **Production**, **LTS**, or **Historical**. An unlabeled entry has not had its maturity independently classified; it should not be assumed production-ready.
+
 ## Contents
 
 - [Foundations & Introductions](#foundations--introductions)
 - [Learning Paths](#learning-paths)
+- [Core Concepts & Vocabulary](#core-concepts--vocabulary)
+- [What Counts as Zero Knowledge?](#what-counts-as-zero-knowledge)
+- [Choosing a Development Approach](#choosing-a-development-approach)
 - [Math & Cryptography Prerequisites](#math--cryptography-prerequisites)
 - [Key Papers & Research](#key-papers--research)
 - [Research Frontiers](#research-frontiers)
 - [Proof Systems](#proof-systems)
+- [Trusted Setup & Ceremonies](#trusted-setup--ceremonies)
 - [Benchmarks & Comparisons](#benchmarks--comparisons)
 - [Libraries & Frameworks](#libraries--frameworks)
 - [Languages & DSLs](#languages--dsls)
 - [Tutorials & Courses](#tutorials--courses)
 - [Hands-On Labs & Exercises](#hands-on-labs--exercises)
+- [Client-Side & Mobile Proving](#client-side--mobile-proving)
 - [Books](#books)
 - [Applications & Projects](#applications--projects)
 - [Developer Tools](#developer-tools)
+- [Verification & Aggregation](#verification--aggregation)
 - [Hardware Acceleration](#hardware-acceleration)
+- [Testing & Validation](#testing--validation)
 - [Security](#security)
 - [Communities & Events](#communities--events)
 - [Newsletters & Media](#newsletters--media)
@@ -92,6 +103,43 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 
 ---
 
+## Core Concepts & Vocabulary
+
+- **Statement / public inputs:** the claim visible to the verifier, such as a Merkle root, commitment, or program output.
+- **Witness / private inputs:** secret data used by the prover to establish the statement.
+- **Arithmetization:** the representation of computation as algebraic constraints, such as R1CS, AIR, or a PLONKish circuit.
+- **Polynomial commitment scheme (PCS):** a primitive used to commit to polynomials and later prove evaluation claims; common families include KZG, IPA, and FRI.
+- **Trusted setup:** generation of public parameters that may be circuit-specific or universal. Some systems are transparent and need no secret setup ceremony.
+- **Recursion:** verifying one proof inside another proof, commonly used for aggregation and compression.
+- **Folding / IVC:** incrementally combining computation steps or constraint instances without generating a complete recursive proof after every step.
+- **zkVM:** a virtual machine whose execution can be proven. It trades some circuit-level control for a more familiar programming model.
+
+## What Counts as Zero Knowledge?
+
+A proof system has three separate properties that should not be conflated:
+
+- **Completeness:** an honest prover with a valid witness can convince the verifier.
+- **Soundness:** a cheating prover cannot convince the verifier of a false statement, except with negligible probability.
+- **Zero knowledge:** the proof reveals nothing about the witness beyond the truth of the public statement.
+
+A cryptographic **proof** is sound against an unbounded prover; an **argument** relies on computational assumptions and is sound against efficient adversaries. Most deployed SNARKs and STARKs are arguments, despite the ecosystem's common use of “proof” as an umbrella term.
+
+Succinctness does not imply privacy. A validity proof can establish correct execution while exposing the full trace or all inputs, and many zkVM or STARK stacks make zero-knowledge blinding optional for performance. Likewise, a **zkVM** is an execution environment, not a single proof system. When evaluating a project, verify whether zero knowledge is inherent, optional, disabled in the cited configuration, or not provided at all.
+
+## Choosing a Development Approach
+
+| Goal | Start with | Why | Main trade-off |
+|------|------------|-----|----------------|
+| Learn circuit design | Circom, Noir, or gnark | Makes constraints, witnesses, and public inputs concrete | You must reason carefully about under-constraint and field arithmetic |
+| Prove an existing Rust program | RISC Zero, SP1, Jolt, or OpenVM | Familiar language and tooling; less custom circuit work | More proving overhead and a larger trusted computing stack |
+| Build a highly specialized prover | Halo2, arkworks, Plonky3, or Winterfell | Fine-grained control over arithmetization and performance | Steeper cryptography and systems learning curve |
+| Prove repeated or stateful computation | Nova-family folding schemes or an IVC framework | Efficient incremental composition | Rapidly evolving APIs and more complex soundness assumptions |
+| Add private membership or signaling | Semaphore or MACI | Reusable application protocols with defined threat models | Protocol constraints may not fit every identity or governance model |
+
+Before choosing, compare the security assumptions, setup model, supported fields and curves, recursion strategy, proof size, verifier environment, prover memory, hardware requirements, audit history, and license. Benchmark on your own workload: published numbers rarely use identical circuits, security levels, hardware, or proof configurations.
+
+---
+
 ## Math & Cryptography Prerequisites
 
 - [The MoonMath Manual](https://leastauthority.com/community-matters/moonmath-manual/) - Practical math background for finite fields, elliptic curves, pairings, and SNARKs.
@@ -106,6 +154,8 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 
 ## Key Papers & Research
 
+For a chronological explanation of how the main constructions fit together, see [A Research History of Zero-Knowledge Proofs](docs/research-history.md). It covers foundations, PCPs and sum-check, pairing SNARKs, universal setups, transparent arguments, STARKs, recursion, folding, MPC-in-the-head, lattice-based ZK, and key limitations.
+
 ### Foundational
 - [The Knowledge Complexity of Interactive Proof Systems (1985)](https://people.csail.mit.edu/silvio/Selected%20Scientific%20Papers/Proof%20Systems/The_Knowledge_Complexity_Of_Interactive_Proof_Systems.pdf) - Goldwasser, Micali, Rackoff. The paper that defined zero-knowledge proofs.
 - [How to Prove Yourself: Practical Solutions to Identification and Signature Problems (1986)](https://link.springer.com/chapter/10.1007/3-540-47721-7_12) - Fiat & Shamir. Introduced the Fiat-Shamir heuristic for non-interactive proofs.
@@ -115,8 +165,6 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 - [Quadratic Span Programs and Succinct NIZKs (GGPR13)](https://eprint.iacr.org/2012/215) - Key construction underlying many SNARK systems.
 - [On the Size of Pairing-Based Non-Interactive Arguments (Groth16)](https://eprint.iacr.org/2016/260) - The most widely deployed SNARK proving system.
 - [Succinct Non-Interactive Zero Knowledge for a von Neumann Architecture (BCTV14)](https://eprint.iacr.org/2013/879) - SNARKs for general computation.
-- [Garuda and Pari: Faster and Smaller SNARKs via Equifficient Polynomial Commitments (2024)](https://eprint.iacr.org/2024/1245) - New commitment scheme yielding smaller proofs and faster verification.
-- [Zeromorph: Zero-Knowledge Multilinear-Evaluation Proofs from Homomorphic Univariate Commitments (2024)](https://eprint.iacr.org/2023/917) - Converts univariate commitments to multilinear evaluations with minimal overhead.
 
 ### zk-STARKs
 - [Scalable, Transparent, and Post-Quantum Secure Computational Integrity (2018)](https://eprint.iacr.org/2018/046) - Ben-Sasson et al. The original STARK paper.
@@ -129,21 +177,14 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 ### Folding Schemes
 - [Nova: Recursive Zero-Knowledge Arguments from Folding Schemes (2021)](https://eprint.iacr.org/2021/370) - Kothapalli, Setty, Tzialla. Efficient incremental verifiable computation.
 - [SuperNova: Proving Universal Machine Execution (2022)](https://eprint.iacr.org/2022/1758) - Extends Nova to non-uniform computation.
-- [Mira: Efficient Folding for Pairing-based Arguments (2024)](https://eprint.iacr.org/2024/2025) - Beal & Fisch. Folding optimized for pairing-friendly curves with improved accumulation.
 
 ### Lookup Arguments
 - [Plookup: A Simplified Polynomial Protocol for Lookup Tables (2020)](https://eprint.iacr.org/2020/315) - Gabizon & Williamson.
 - [Lasso: A Lookup Argument with Logarithmic Proof Size (2023)](https://eprint.iacr.org/2023/1216) - Setty, Thaler, Wahby.
 
-### zkML & Verifiable AI
-- [zkLLM: Zero Knowledge Proofs for Large Language Models (2024)](https://arxiv.org/abs/2406.09032) - Sun, Li & Zhang. SNARKs for LLM inference with sub-linear verification.
-- [ZKTorch: Compiling ML Inference to Zero-Knowledge Proofs via Parallel Proof Accumulation (2025)](https://arxiv.org/abs/2507.07031) - End-to-end system for proving ONNX model inference in ZK.
-
-### Bitcoin & Cross-Chain
-- [Applications Of Zero-Knowledge Proofs On Bitcoin (2025)](https://eprint.iacr.org/2025/1271) - Ozmiş. STARK-based proof-of-reserve, light clients, and BitVM rollups.
-
 ### Surveys
 - [A Survey on the Applications of Zero-Knowledge Proofs](https://arxiv.org/abs/2408.00243) - Comprehensive overview of ZKP applications.
+- [Zero-Knowledge Proof Frameworks: A Systematic Survey](https://arxiv.org/abs/2502.07063) - 2025 comparison of practical frameworks, development models, and application trade-offs.
 - [Proofs, Arguments, and Zero-Knowledge (survey)](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html) - Justin Thaler's survey and textbook.
 
 ---
@@ -184,13 +225,30 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 
 ## Proof Systems
 
-| System | Type | Trusted Setup | Post-Quantum | Proof Size | Prover Time |
-|--------|------|---------------|--------------|------------|-------------|
-| Groth16 | SNARK | Per-circuit | No | ~200 B | Fast |
-| PLONK | SNARK | Universal | No | ~400 B | Moderate |
-| Halo2 | SNARK | None (IPA) | No | ~5 KB | Moderate |
-| STARKs | STARK | None | Yes | ~50-200 KB | Fast |
-| Bulletproofs | Argument | None | No | ~700 B | Slow |
+These are families, not directly comparable products. Concrete proof size and performance depend on the implementation, security level, arithmetization, commitment scheme, recursion, and workload.
+
+| Family | Typical representation / commitment | Setup | Quantum-resistance posture | Common fit |
+|--------|-------------------------------------|-------|----------------------------|------------|
+| Groth16 | QAP/R1CS with pairing-based commitments | Circuit-specific ceremony | Not post-quantum | Very small proofs and inexpensive on-chain verification for stable circuits |
+| PLONKish | Polynomial IOP with custom gates and lookups; KZG or IPA backends | Universal/updatable with KZG; transparent with IPA | Common backends are not post-quantum | Flexible application circuits, rollups, and recursive constructions |
+| STARK / FRI | AIR with hash-based commitments and FRI | Transparent | Designed around hash-based assumptions commonly considered post-quantum | Large computations, transparent proving, and recursion where larger proofs are acceptable |
+| Bulletproofs | R1CS and inner-product arguments | Transparent | Not post-quantum | Range proofs and smaller statements without a trusted setup |
+| Folding / IVC | Relaxed R1CS, CCS, or related instances; commitment varies | Varies by construction | Varies by construction | Incremental, recursive, and stateful computation |
+
+Do not infer security from the family name alone. For example, “PLONK” does not specify the commitment scheme, transcript, curve, lookup argument, or implementation, and “zkVM” describes an execution model rather than one proof system.
+
+---
+
+## Trusted Setup & Ceremonies
+
+A structured reference string (SRS) may be circuit-specific, universal and updatable, or absent in transparent systems. For multi-party ceremonies, security generally depends on at least one participant generating and destroying their secret contribution correctly. Development parameters or locally generated “toxic waste” must never secure production proofs.
+
+- [Perpetual Powers of Tau](https://pse.dev/projects/powers-of-tau) - **LTS.** PSE's ongoing phase-one ceremony for circuits up to `2^28` constraints.
+- [Circom: Proving Circuits with ZK](https://docs.circom.io/getting-started/proving-circuits/) - Practical Groth16 phase-one and circuit-specific setup workflow with snarkjs.
+- [SoK: Trusted Setups for Powers-of-Tau Strings](https://eprint.iacr.org/2025/064) - Systematization of setup constructions, security properties, and ceremony trade-offs.
+- [On-Chain Trusted Setup Ceremony](https://a16zcrypto.com/posts/article/on-chain-trusted-setup-ceremony/) - Explanation and implementation of an auditable EVM-based Powers-of-Tau ceremony.
+
+Before consuming an SRS, verify its maximum degree, curve, transcript, contribution-validation procedure, final artifact hashes, and whether the application requires a second circuit-specific phase.
 
 ---
 
@@ -292,8 +350,20 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 - [RISC Zero Quickstart](https://dev.risczero.com/api/zkvm/quickstart) - Build and prove a RISC-V guest program.
 - [SP1 Getting Started](https://docs.succinct.xyz/docs/sp1/getting-started/install) - Install SP1 and generate proofs for Rust programs.
 - [Jolt Book](https://jolt.a16zcrypto.com/) - Documentation for a16z's lookup-based zkVM.
-- [Miden VM Documentation](https://0xpolygonmiden.github.io/miden-vm/) - Learn Polygon Miden's STARK-based virtual machine.
+- [Miden VM Documentation](https://docs.miden.xyz/design/) - Design reference for Miden's STARK-based VM, proving system, and execution model.
 - [OpenVM Documentation](https://docs.openvm.dev/) - Build and customize programs with OpenVM's modular zkVM framework.
+
+---
+
+## Client-Side & Mobile Proving
+
+Client-side proving keeps witnesses on the user's device, but memory limits, binary size, battery use, browser isolation, and platform-specific acceleration become part of the security and usability model.
+
+- [Mopro](https://github.com/zkmopro/mopro) - Toolkit and generated bindings for Circom, Halo2, and Noir proving on iOS, Android, React Native, Flutter, and the web.
+- [NoirJS Browser App Tutorial](https://noir-lang.org/docs/tutorials/noirjs_app/) - Generate witnesses and proofs in a browser with NoirJS and Barretenberg's WASM backend.
+- [snarkjs in the Browser](https://github.com/iden3/snarkjs#in-the-browser) - JavaScript and WebAssembly tooling for client-side Groth16 and PLONK workflows.
+
+For production apps, test peak memory rather than average memory, bind every proof to its application and network context, avoid logging private inputs, and verify proofs independently of the device that generated them.
 
 ---
 
@@ -312,7 +382,6 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 ### Layer 2 / Rollups
 - [zkSync Era](https://zksync.io/) - ZK rollup by Matter Labs. General-purpose EVM-compatible L2.
 - [Starknet](https://starknet.io/) - Permissionless ZK rollup by StarkWare using STARKs.
-- [Polygon zkEVM](https://polygon.technology/polygon-zkevm) - EVM-equivalent ZK rollup by Polygon.
 - [Scroll](https://scroll.io/) - zkEVM-based L2 with bytecode-level EVM compatibility.
 - [Linea](https://linea.build/) - Consensys ZK rollup with full EVM equivalence.
 - [Taiko](https://taiko.xyz/) - Based (L1-sequenced) ZK rollup.
@@ -323,13 +392,13 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 - [Aztec Network](https://aztec.network/) - Privacy-first L2 with encrypted state and private execution.
 - [Mina Protocol](https://minaprotocol.com/) - Constant-size (22 KB) blockchain using recursive SNARKs.
 - [Penumbra](https://penumbra.zone/) - Private proof-of-stake network for Cosmos.
-- [ZKBob](https://zkbob.com/) - Privacy layer for stablecoin transactions using zero-knowledge proofs.
+- [zkBob](https://docs.zkbob.com/) - Compliance-oriented private-transfer protocol and wallet; check the deployment pages because supported pools have changed over time.
 
 ### Identity & Authentication
 - [iden3](https://iden3.io/) - Self-sovereign identity framework using ZKPs.
-- [Worldcoin](https://worldcoin.org/) - Proof-of-personhood using ZK for privacy-preserving identity.
+- [World ID](https://docs.world.org/world-id) - Proof-of-human protocol that uses ZK proofs for unlinkable presentation of credentials.
 - [Semaphore](https://semaphore.pse.dev/) - Anonymous signaling and group membership protocol.
-- [Sismo](https://www.sismo.io/) - Privacy-preserving attestations using ZK badges.
+- [Longfellow ZK](https://github.com/google/longfellow-zk) - **Security review.** Google's library for ZK protocols over MDOC, JWT, and W3C Verifiable Credential identity formats.
 
 ### Voting & Governance
 - [MACI](https://maci.pse.dev/) - Minimum Anti-Collusion Infrastructure for private on-chain voting.
@@ -342,16 +411,16 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 - [RISC Zero](https://www.risczero.com/) - General-purpose zkVM based on RISC-V.
 - [SP1](https://github.com/succinctlabs/sp1) - Succinct's high-performance RISC-V zkVM.
 - [Jolt](https://github.com/a16z/jolt) - a16z's zkVM using lookup-based arguments (Lasso).
-- [Miden](https://github.com/0xPolygonMiden/miden-vm) - Polygon's STARK-based zkVM with client-side proving.
+- [Miden VM](https://github.com/0xMiden/miden-vm) - **Alpha.** STARK-based virtual machine used by Miden's client-side proving architecture; not production-ready.
 - [OpenVM](https://github.com/openvm-org/openvm) - Modular zkVM framework designed for custom instruction sets and application-specific extensions.
 - [Nexus](https://nexus.xyz/) - Modular, extensible, open-source zkVM.
 - [Valida](https://github.com/valida-xyz/valida) - STARK-based zkVM optimized for real-world programs.
-- [ZisK](https://github.com/0xPolygonHermez/zisk) - Low-latency, open-source RISC-V zkVM by Jordi Baylina (ex-Polygon zkEVM).
-- [ZKM](https://github.com/zkMIPS/zkm) - Production-grade zkVM using the MIPS32r2 instruction set (zkMIPS).
+- [ZisK](https://github.com/0xPolygonHermez/zisk) - Open-source RISC-V zkVM focused on high-throughput proof generation.
+- [ZKM](https://github.com/zkMIPS/zkm) - MIPS32r2-based zkVM and proving stack.
 
 ### ZK on Bitcoin
-- [Citrea](https://citrea.xyz/) - Bitcoin's first production-grade ZK rollup using RISC Zero zkEVM and BitVM bridges.
-- [BitcoinOS](https://bitcoinos.dev/) - BitSNARK protocol enabling zk-SNARK verification on Bitcoin mainnet without protocol changes.
+- [Citrea](https://docs.citrea.xyz/) - EVM-compatible ZK rollup that uses Bitcoin for data availability and a BitVM-based bridge design.
+- [BitcoinOS](https://bitcoinos.dev/) - Project developing BitSNARK-based verification and rollup infrastructure for Bitcoin.
 - [ZeroSync](https://zerosync.org/) - STARK-based ZK light client for Bitcoin header-chain verification.
 - [BitVM](https://bitvm.org/) - Optimistic verification paradigm for expressive computation on Bitcoin via fraud proofs.
 
@@ -369,8 +438,13 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 - [Rarimo ZK Passport](https://docs.rarimo.com/zk-passport/) - Turn biometric passports into flexible ZK identity credentials for Web3.
 
 ### ZK Bridges & Interoperability
-- [Polyhedra zkBridge](https://polyhedra.network/zkbridge) - zk-SNARK-based cross-chain asset and data transfers across 25+ chains.
+- [Polyhedra zkBridge](https://polyhedra.network/zkbridge) - zk-SNARK-based cross-chain state and message verification.
 - [Union](https://union.build/) - ZK-powered cross-chain consensus verification supporting Solidity, Move, Cosmos, and BitVM.
+
+### Historical & Sunset Projects
+
+- [Polygon zkEVM Mainnet Beta](https://polygon.technology/polygon-zkevm) - **Historical.** EVM-equivalent rollup whose sequencer was sunset on July 3, 2026; retained for its technical and ecosystem history.
+- [Sismo](https://github.com/sismo-core) - **Historical.** ZK badge and selective-disclosure protocol whose public repositories remain useful as implementation references.
 
 ---
 
@@ -384,15 +458,36 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 - [Herodotus](https://www.herodotus.dev/) - Cross-chain data access using storage proofs.
 - [Brevis](https://brevis.network/) - ZK data coprocessor for omnichain historical data and verifiable compute.
 - [Lagrange](https://lagrange.dev/) - ZK coprocessor with DeepProve library for verifiable ML and cross-chain state.
-- [Nebra UPA](https://nebra.one/) - Universal Proof Aggregation protocol reducing on-chain ZK verification costs by 10x+.
+
+## Verification & Aggregation
+
+- [Nebra UPA](https://nebra.one/) - Universal proof-aggregation protocol for amortizing on-chain verification costs.
+- [Aligned Proof Aggregation](https://docs.alignedlayer.com/architecture/2_aggregation_mode) - Recursive aggregation service that compresses supported proofs before Ethereum verification.
+- [zkVerify](https://docs.zkverify.io/handbook/introduction/what-is-zkverify) - Dedicated verification chain with proof-system-specific verifier modules and aggregated verification receipts.
+- [snarkjs Solidity Verifier](https://docs.circom.io/getting-started/proving-circuits/#verifying-from-a-smart-contract) - Generate and exercise a circuit-specific Groth16 verifier contract.
+- [gnark Verifier Support](https://github.com/Consensys/gnark#supported-proving-systems-and-curves) - Exports audited Groth16 and PLONK verifier templates for supported curves, with BN254 as the primary Solidity target.
+
+Verification infrastructure changes the trust boundary. Check which proof systems and versions are accepted, how verification keys are registered, how public inputs are committed, whether aggregation is cryptographic or crypto-economic, how inclusion is proven, and where data remains available.
 
 ## Hardware Acceleration
 
 - [Ingonyama ICICLE](https://github.com/ingonyama-zk/icicle) - GPU-accelerated cryptography library (MSM, NTT, Poseidon) with Rust and Go bindings.
-- [Cysic](https://cysic.xyz/) - ZK ASIC and GPU acceleration platform offering real-time proof generation.
+- [Cysic](https://cysic.xyz/) - GPU and custom-hardware acceleration platform for ZK proving.
 - [Fabric Cryptography](https://www.fabriccryptography.com/) - Verifiable Processing Unit (VPU) custom chip for ZK, FHE, and MPC.
 - [Supranational](https://www.supranational.net/) - GPU-accelerated ZK proving infrastructure and optimized cryptographic implementations.
 - [Irreducible](https://www.irreducible.com/) - FPGA and zkASIC hardware combining Binius-style proofs with custom silicon.
+
+---
+
+## Testing & Validation
+
+- [Circom: Testing Circuits](https://docs.circom.io/getting-started/testing-circuits/) - Official workflow for writing and running circuit tests.
+- [gnark Testing and Security](https://github.com/Consensys/gnark#testing) - Examples of release checks, fuzz tests, verifier tests, audits, and published security advisories.
+- [CIVER](https://github.com/costa-group/circom_civer) - Modular verification of Circom safety properties and tag assertions.
+
+Minimum validation should include positive tests, invalid-witness tests, mutated public inputs, boundary and out-of-range values, alternate witnesses for the same statement, malformed proof encodings, wrong verification keys, wrong domains or chain IDs, replay attempts, and differential checks between native witness logic and circuit constraints.
+
+For benchmarks, publish the exact commit, security parameters, circuit or guest workload, proof mode, hardware, thread count, accelerator, warm-up policy, peak memory, proof size, verifier environment, and whether setup or compilation time is included.
 
 ---
 
@@ -486,23 +581,10 @@ Use this path if you need to evaluate where ZK is useful, risky, or production-r
 
 ## Contributing
 
-Contributions are welcome. Please open a pull request with a short explanation of why the resource belongs here.
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md) before opening a pull request. Additions must explain their distinct value, cite a primary source, disclose lifecycle and security status when known, and pass the automated link check.
 
-Good additions usually meet at least one of these criteria:
-
-- It is an official project, protocol, library, paper, course, or standard.
-- It is widely used or cited in the ZK ecosystem.
-- It teaches a concept more clearly than the resources already listed.
-- It helps builders avoid security, implementation, or protocol-design mistakes.
-- It is maintained and still useful to readers today.
-
-Before submitting:
-
-- Check that the link is active.
-- Place the resource in the most specific section.
-- Use the existing bullet format: `- [Name](https://example.com/) - One concise sentence.`
-- Avoid adding duplicate, promotional, or low-signal content.
+This list is released under [CC0 1.0 Universal](LICENSE).
 
 ---
 
-Last updated: May 2026.
+Last reviewed: July 2026.
