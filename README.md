@@ -76,14 +76,14 @@ Use this path if you want the intuition first and the math later.
 - Start with Matthew Green's [illustrated primer](https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/) and Chainlink's [high-level explainer](https://chain.link/education/zero-knowledge-proof-zkp).
 - Watch the early [ZK Whiteboard Sessions](https://zkhack.dev/whiteboard/) modules, especially "What is a SNARK?" and "Building a SNARK".
 - Read the first chapters of [The RareSkills Book of Zero Knowledge](https://www.rareskills.io/zk-book) to connect the ideas to code.
-- Build a toy circuit in [Circom](https://docs.circom.io/getting-started/writing-circuits/) or [Noir](https://noir-lang.org/docs/dev/getting_started/quick_start).
+- Build a toy circuit in [Circom](https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/writing-circuits.md) or [Noir](https://noir-lang.org/docs/getting_started_manually).
 
 ### Developer Track
 Use this path if you can already code and want to build working proofs.
 
 - Learn finite fields, arithmetic circuits, R1CS, polynomial commitments, and Fiat-Shamir.
-- Build circuits with [Circom](https://docs.circom.io/) plus [snarkjs](https://github.com/iden3/snarkjs), then repeat the same idea with [Noir](https://noir-lang.org/docs).
-- Complete [ZK Puzzles](https://github.com/0xPARC/zk-puzzles) and study bugs in the [ZK Bug Tracker](https://github.com/0xPARC/zk-bug-tracker).
+- Build circuits with [Circom](https://github.com/iden3/circom) plus [snarkjs](https://github.com/iden3/snarkjs), then repeat the same idea with [Noir](https://noir-lang.org/docs).
+- Complete [ZK Puzzles](https://github.com/RareSkills/zero-knowledge-puzzles) and study bugs in the [ZK Bug Tracker](https://github.com/0xPARC/zk-bug-tracker).
 - Try a zkVM such as [RISC Zero](https://dev.risczero.com/) or [SP1](https://docs.succinct.xyz/) once circuit-level development feels familiar.
 
 ### Research Track
@@ -147,8 +147,8 @@ Before choosing, compare the security assumptions, setup model, supported fields
 - [Cryptography I by Dan Boneh](https://www.coursera.org/learn/crypto) - Broad introduction to cryptographic primitives and security thinking.
 - [Mathematics for Computer Science](https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/) - MIT OCW course covering proofs, discrete math, probability, and number theory basics.
 - [Essence of Linear Algebra](https://www.3blue1brown.com/topics/linear-algebra) - Visual refresher for vectors, matrices, bases, and transformations.
-- [Abstract Algebra: Theory and Applications](http://abstract.ups.edu/) - Free book for groups, rings, fields, and homomorphisms.
-- [Pairings for Beginners](https://www.craigcostello.com.au/pairings/PairingsForBeginners.pdf) - Introductory notes for bilinear pairings used in pairing-based SNARKs.
+- [Abstract Algebra: Theory and Applications](https://judsonbooks.org/abstract-algebra-theory-and-applications/) - Free book for groups, rings, fields, and homomorphisms.
+- [Pairings for Beginners](https://static1.squarespace.com/static/5fdbb09f31d71c1227082339/t/5ff394720493bd28278889c6/1609798774687/PairingsForBeginners.pdf) - Introductory notes for bilinear pairings used in pairing-based SNARKs.
 
 ---
 
@@ -244,7 +244,7 @@ Do not infer security from the family name alone. For example, “PLONK” does 
 A structured reference string (SRS) may be circuit-specific, universal and updatable, or absent in transparent systems. For multi-party ceremonies, security generally depends on at least one participant generating and destroying their secret contribution correctly. Development parameters or locally generated “toxic waste” must never secure production proofs.
 
 - [Perpetual Powers of Tau](https://pse.dev/projects/powers-of-tau) - **LTS.** PSE's ongoing phase-one ceremony for circuits up to `2^28` constraints.
-- [Circom: Proving Circuits with ZK](https://docs.circom.io/getting-started/proving-circuits/) - Practical Groth16 phase-one and circuit-specific setup workflow with snarkjs.
+- [Circom: Proving Circuits with ZK](https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/proving-circuits.md) - Practical Groth16 phase-one and circuit-specific setup workflow with snarkjs.
 - [SoK: Trusted Setups for Powers-of-Tau Strings](https://eprint.iacr.org/2025/064) - Systematization of setup constructions, security properties, and ceremony trade-offs.
 - [On-Chain Trusted Setup Ceremony](https://a16zcrypto.com/posts/article/on-chain-trusted-setup-ceremony/) - Explanation and implementation of an auditable EVM-based Powers-of-Tau ceremony.
 
@@ -331,10 +331,10 @@ Before consuming an SRS, verify its maximum degree, curve, transcript, contribut
 ## Hands-On Labs & Exercises
 
 ### Circuits
-- [Circom 2 Documentation](https://docs.circom.io/) - Official Circom docs covering signals, constraints, templates, and compiler outputs.
-- [Circom: Writing Circuits](https://docs.circom.io/getting-started/writing-circuits/) - Official first-circuit tutorial.
+- [Circom 2 Documentation](https://github.com/iden3/circom/blob/master/mkdocs/docs/index.md) - Official Circom docs covering signals, constraints, templates, and compiler outputs.
+- [Circom: Writing Circuits](https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/writing-circuits.md) - Official first-circuit tutorial.
 - [Circom / snarkjs Tutorial](https://docs.iden3.io/circom-snarkjs/) - End-to-end Circom and snarkjs workflow.
-- [Noir Quick Start](https://noir-lang.org/docs/dev/getting_started/quick_start) - Official guide to creating, executing, and proving Noir programs.
+- [Noir Quick Start](https://noir-lang.org/docs/getting_started_manually) - Official guide to creating, executing, and proving Noir programs.
 - [Noir Examples](https://github.com/noir-lang/noir-examples) - Example Noir projects and circuits.
 - [Awesome Noir](https://github.com/noir-lang/awesome-noir) - Curated examples, libraries, tools, and learning resources for Noir.
 - [The halo2 Book](https://zcash.github.io/halo2/) - Official guide to Halo2 concepts, circuit development, and crate usage.
@@ -342,7 +342,6 @@ Before consuming an SRS, verify its maximum degree, curve, transcript, contribut
 - [ZKREPL](https://zkrepl.dev/) - Browser playground for experimenting with Circom circuits.
 
 ### Practice Problems
-- [ZK Puzzles](https://github.com/0xPARC/zk-puzzles) - Circuit-writing practice problems from 0xPARC.
 - [RareSkills Zero Knowledge Puzzles](https://github.com/RareSkills/zero-knowledge-puzzles) - Exercises for learning Circom syntax and EVM-compatible ZK programs.
 - [ZK Bug Tracker](https://github.com/0xPARC/zk-bug-tracker) - Real ZK vulnerabilities to study and reproduce.
 
@@ -360,7 +359,7 @@ Before consuming an SRS, verify its maximum degree, curve, transcript, contribut
 Client-side proving keeps witnesses on the user's device, but memory limits, binary size, battery use, browser isolation, and platform-specific acceleration become part of the security and usability model.
 
 - [Mopro](https://github.com/zkmopro/mopro) - Toolkit and generated bindings for Circom, Halo2, and Noir proving on iOS, Android, React Native, Flutter, and the web.
-- [NoirJS Browser App Tutorial](https://noir-lang.org/docs/tutorials/noirjs_app/) - Generate witnesses and proofs in a browser with NoirJS and Barretenberg's WASM backend.
+- [NoirJS Browser App Tutorial](https://noir-lang.org/docs/guides/building_a_web_app) - Generate witnesses and proofs in a browser with NoirJS and Barretenberg's WASM backend.
 - [snarkjs in the Browser](https://github.com/iden3/snarkjs#in-the-browser) - JavaScript and WebAssembly tooling for client-side Groth16 and PLONK workflows.
 
 For production apps, test peak memory rather than average memory, bind every proof to its application and network context, avoid logging private inputs, and verify proofs independently of the device that generated them.
@@ -420,7 +419,7 @@ For production apps, test peak memory rather than average memory, bind every pro
 
 ### ZK on Bitcoin
 - [Citrea](https://docs.citrea.xyz/) - EVM-compatible ZK rollup that uses Bitcoin for data availability and a BitVM-based bridge design.
-- [BitcoinOS](https://bitcoinos.dev/) - Project developing BitSNARK-based verification and rollup infrastructure for Bitcoin.
+- [BitcoinOS](https://bitcoinos.build/) - Project developing BitSNARK-based verification and rollup infrastructure for Bitcoin.
 - [ZeroSync](https://zerosync.org/) - STARK-based ZK light client for Bitcoin header-chain verification.
 - [BitVM](https://bitvm.org/) - Optimistic verification paradigm for expressive computation on Bitcoin via fraud proofs.
 
@@ -428,7 +427,7 @@ For production apps, test peak memory rather than average memory, bind every pro
 - [EZKL](https://docs.ezkl.xyz/) - Toolchain for proving machine-learning and ONNX computational graph inference with ZK proofs.
 - [Giza](https://www.gizatech.xyz/) - ML platform on Starknet for verifiable AI agents and autonomous DeFi strategies.
 - [Polyhedra](https://polyhedra.network/) - zkPyTorch compiler and Expander proof system for verifiable ML and cross-chain zkBridge.
-- [Modulus Labs](https://www.modulus.xyz/) - Specialized ZK proofs for AI inference; built RockyBot and zkPredictor.
+- [Modulus Labs](https://moduluslabs.io/) - Specialized ZK proofs for AI inference; built RockyBot and zkPredictor.
 - [Rarimo](https://rarimo.com/) - Bionetta proving framework for client-side zkML (e.g., face recognition) in zkPassport.
 
 ### Web Data & Attestations
@@ -438,7 +437,7 @@ For production apps, test peak memory rather than average memory, bind every pro
 - [Rarimo ZK Passport](https://docs.rarimo.com/zk-passport/) - Turn biometric passports into flexible ZK identity credentials for Web3.
 
 ### ZK Bridges & Interoperability
-- [Polyhedra zkBridge](https://polyhedra.network/zkbridge) - zk-SNARK-based cross-chain state and message verification.
+- [Polyhedra zkBridge](https://docs.zkbridge.com/) - zk-SNARK-based cross-chain state and message verification.
 - [Union](https://union.build/) - ZK-powered cross-chain consensus verification supporting Solidity, Move, Cosmos, and BitVM.
 
 ### Historical & Sunset Projects
@@ -451,9 +450,9 @@ For production apps, test peak memory rather than average memory, bind every pro
 ## Developer Tools
 
 - [Circomspect](https://github.com/trailofbits/circomspect) - Static analysis tool for Circom circuits by Trail of Bits.
-- [ECNE](https://github.com/franklynwang/ecne) - Tool for verifying correct circuit construction.
+- [ECNE](https://github.com/franklynwang/EcneProject) - Tool for verifying correct circuit construction.
 - [Halo2 Analyzer](https://github.com/quantstamp/halo2-analyzer) - Automated analysis for Halo2 circuits.
-- [Sindri](https://sindri.app/) - Cloud proving infrastructure. Generate proofs via API.
+- [Sindri](https://sindri-labs.github.io/docs/) - Cloud proving infrastructure. Generate proofs via API.
 - [Axiom](https://www.axiom.xyz/) - ZK coprocessor for reading on-chain data with proofs.
 - [Herodotus](https://www.herodotus.dev/) - Cross-chain data access using storage proofs.
 - [Brevis](https://brevis.network/) - ZK data coprocessor for omnichain historical data and verifiable compute.
@@ -464,7 +463,7 @@ For production apps, test peak memory rather than average memory, bind every pro
 - [Nebra UPA](https://nebra.one/) - Universal proof-aggregation protocol for amortizing on-chain verification costs.
 - [Aligned Proof Aggregation](https://docs.alignedlayer.com/architecture/2_aggregation_mode) - Recursive aggregation service that compresses supported proofs before Ethereum verification.
 - [zkVerify](https://docs.zkverify.io/handbook/introduction/what-is-zkverify) - Dedicated verification chain with proof-system-specific verifier modules and aggregated verification receipts.
-- [snarkjs Solidity Verifier](https://docs.circom.io/getting-started/proving-circuits/#verifying-from-a-smart-contract) - Generate and exercise a circuit-specific Groth16 verifier contract.
+- [snarkjs Solidity Verifier](https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/proving-circuits.md#verifying-from-a-smart-contract) - Generate and exercise a circuit-specific Groth16 verifier contract.
 - [gnark Verifier Support](https://github.com/Consensys/gnark#supported-proving-systems-and-curves) - Exports audited Groth16 and PLONK verifier templates for supported curves, with BN254 as the primary Solidity target.
 
 Verification infrastructure changes the trust boundary. Check which proof systems and versions are accepted, how verification keys are registered, how public inputs are committed, whether aggregation is cryptographic or crypto-economic, how inclusion is proven, and where data remains available.
@@ -481,7 +480,7 @@ Verification infrastructure changes the trust boundary. Check which proof system
 
 ## Testing & Validation
 
-- [Circom: Testing Circuits](https://docs.circom.io/getting-started/testing-circuits/) - Official workflow for writing and running circuit tests.
+- [Circom: Testing Circuits](https://github.com/iden3/circom/blob/master/mkdocs/docs/getting-started/testing-circuits.md) - Official workflow for writing and running circuit tests.
 - [gnark Testing and Security](https://github.com/Consensys/gnark#testing) - Examples of release checks, fuzz tests, verifier tests, audits, and published security advisories.
 - [CIVER](https://github.com/costa-group/circom_civer) - Modular verification of Circom safety properties and tag assertions.
 
@@ -542,7 +541,7 @@ For benchmarks, publish the exact commit, security parameters, circuit or guest 
 ## Communities & Events
 
 ### Conferences & Hackathons
-- [ZK Summit](https://zkpsummit.com/) - Annual conference dedicated to zero-knowledge proofs.
+- [ZK Summit](https://www.zksummit.com/) - Annual conference dedicated to zero-knowledge proofs.
 - [ZK Hack](https://zkhack.dev/) - ZK-focused hackathons and educational events.
 - [Real World Crypto](https://rwc.iacr.org/) - Applied cryptography conference covering ZKP advances.
 - [ZKProof Workshop](https://zkproof.org) - Standards-focused community workshops.

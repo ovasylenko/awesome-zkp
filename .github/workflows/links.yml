@@ -33,6 +33,11 @@ jobs:
       - name: Check Markdown links
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2
         with:
+          # A browser User-Agent avoids the false-positive 403s that
+          # eprint.iacr.org, doi.org, rwc.iacr.org, reddit.com, and
+          # substack.com return to lychee's default UA even though the
+          # pages are live for real visitors. This is a hardcoded literal,
+          # not interpolated from any GitHub event context.
           args: >-
             --no-progress
             --max-retries 3
@@ -40,6 +45,7 @@ jobs:
             --max-concurrency 32
             --timeout 20
             --hidden
+            --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
             './**/*.md' LICENSE
           fail: true
           jobSummary: true
