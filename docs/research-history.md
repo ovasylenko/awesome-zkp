@@ -174,7 +174,7 @@ This area includes both specialized proofs for lattice relations and general suc
 
 ## Systems for verifiable computation
 
-- **Setty et al. — [Resolving the Conflict Between Generality and Plausibility in Verified Computation](https://www.usenix.org/conference/eurosys13/technical-sessions/presentation/setty) (EuroSys 2013).** Presented practical compiler and protocol techniques for general-purpose verified computation, complementing the emerging SNARK line.
+- **Setty et al. — [Resolving the Conflict Between Generality and Plausibility in Verified Computation](https://eprint.iacr.org/2012/622) (EuroSys 2013).** Presented practical compiler and protocol techniques for general-purpose verified computation, complementing the emerging SNARK line.
 - **Braun et al. — [Verifying Computations with State](https://www.microsoft.com/en-us/research/publication/verifying-computations-with-state/) (SOSP 2013).** Introduced Pantry, extending verifiable computation to applications that access authenticated, untrusted storage.
 - **Costello et al. — [Geppetto: Versatile Verifiable Computation](https://eprint.iacr.org/2014/976) (IEEE S&P 2015).** Added reusable subcomputations, multiple functions, and more flexible compilation to the Pinocchio approach.
 
@@ -190,7 +190,7 @@ The evolution is architectural as much as cryptographic: early systems compiled 
 
 ## Surveys and longer treatments
 
-- **Vadhan — [The Complexity of Zero Knowledge](https://people.seas.harvard.edu/~salil/research/ZKsurvey.pdf) (2007).** Surveys definitions, transformations, closure properties, and complexity classes from the first two decades of zero-knowledge research.
+- **Vadhan — [The Complexity of Zero Knowledge](https://people.seas.harvard.edu/~salil/research/complexityZK.pdf) (2007).** Surveys definitions, transformations, closure properties, and complexity classes from the first two decades of zero-knowledge research.
 - **Thaler — [Proofs, Arguments, and Zero-Knowledge](https://people.cs.georgetown.edu/jthaler/ProofsArgsAndZK.html) (living book).** Develops sum-check, GKR, polynomial commitments, SNARKs, and related constructions from first principles, with corrections and updates published alongside the text.
 
 ## Construction map
